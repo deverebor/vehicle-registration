@@ -51,16 +51,11 @@ funcionam corretamente. Para validar o código, foi utilizado o [JUnit](https://
 Na aplicação, pode-se encontrar alguns _TODOS_ que vão ser implementados como forma extra a avaliação, com 
 o intuito de melhorar a qualidade do código.
 
-- [ ] `Adaptação da classe UTILS`: Será removido algumas lógicas repetitivas, que de alguma forma poderam ser 
-  reaproveiadas em mais de um contexto para o Utils.
-- [ ] `Reescrita de algumas regras de négocio`: Será reescrita algumas regras de négocio para melhorar a desempenho da 
-  aplicação.
-- [ ] `Criar testes unitarios para a aplicação`: Será criado testes unitários para as classes, assim assegurando a 
-  completa estabilidade do software.
-- [ ] `Criar classes de exception para as determinadas classes: User & UserActions`: Será criado uma classe de 
-  exception para, conseguirmos tratar as exceções que acontecem na aplicação.
-- [ ] `Pequenos ajustes na interface`: Será realizado alguns ajustes na interface, para melhorar a experiência do 
-  usuário.
+- [X] `Adaptação da classe UTILS`: Será removido algumas lógicas repetitivas, que de alguma forma poderam ser reaproveiadas em mais de um contexto para o Utils. _**PR Da Melhoria: [#4](https://github.com/deverebor/vehicle-registration/pull/4)**_
+- [X] `Reescrita de algumas regras de négocio`: Será reescrita algumas regras de négocio para melhorar a desempenho da aplicação. _**PR Da Melhoria: [#4](https://github.com/deverebor/vehicle-registration/pull/4)**_
+- [X] `Criar testes unitarios para a aplicação`: Será criado testes unitários para as classes, assim assegurando a completa estabilidade do software. _**PR Da Melhoria: [#4](https://github.com/deverebor/vehicle-registration/pull/4)**_
+- [X] `Criar classes de exception para as determinadas classes: User & Car`:Será criado uma classe exception para conseguirmos tratar as exceções que acontecem na aplicação. _**PR Da Melhoria: [#4](https://github.com/deverebor/vehicle-registration/pull/4)**_
+- [X] `Pequenos ajustes na interface`: Será realizado alguns ajustes na interface, para melhorar a experiência do usuário. _**PR Da Melhoria: [#4](https://github.com/deverebor/vehicle-registration/pull/4)**_
 
 ## 🚀 Releases
 
