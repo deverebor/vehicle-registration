@@ -1,3 +1,5 @@
+import Utils.CarException;
+
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
@@ -54,12 +56,17 @@ public class VehicleRegistration extends JFrame {
                 
                 try {
                     memoryUser = validadeUserRegistration();
-                    memoryCar = validadteCarRegistration();
+                    memoryCar = validateCarRegistration();
                     JOptionPane.showMessageDialog(vechicleRegistrationPanel,
                             "Novo veículo do proprietario (" + userName + ") cadastrado!"
                     );
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(vechicleRegistrationPanel, "Erro ao cadastrar veículo");
+                    JOptionPane.showMessageDialog(
+                            vechicleRegistrationPanel,
+                            "Erro ao cadastrar veículo, tente novamente!",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                    );
                 } finally {
                     clearFormFields();
                 }
@@ -88,9 +95,25 @@ public class VehicleRegistration extends JFrame {
         return new User(userName, userPhone);
     }
     
-    public Car validadteCarRegistration() {
+    public Car validateCarRegistration() throws CarException {
+        String plateRegex = "^[A-Z]{3}[0-9]{4}$";
+        
         if (carBrand.isEmpty() || carModel.isEmpty() || carPlate.isEmpty()) {
             JOptionPane.showMessageDialog(vechicleRegistrationPanel, "Preencha todos os campos");
+        } else if(!Character.isUpperCase(carBrand.charAt(0)) || !Character.isUpperCase(carModel.charAt(0))) {
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "A marca ou modelo do carro deve começar com uma letra maiúscula",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else if(!carPlate.matches(plateRegex)) {
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "A sua placa deve conter o padrão Mercosul: AAA0000",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
         
         return new Car(carBrand, carModel, carPlate);
