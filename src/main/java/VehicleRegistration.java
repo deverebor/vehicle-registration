@@ -1,4 +1,5 @@
 import Utils.CarException;
+import Utils.UserException;
 
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
@@ -87,9 +88,30 @@ public class VehicleRegistration extends JFrame {
         });
     }
     
-    public User validadeUserRegistration() {
+    public User validadeUserRegistration() throws UserException {
+        String phoneRegex = "^\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}$";
+        
         if (userName.isEmpty() || userPhone.isEmpty()) {
-            JOptionPane.showMessageDialog(vechicleRegistrationPanel, "Preencha todos os campos");
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "O nome do usuário e o telefone são obrigatórios!",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else if (!Character.isUpperCase(userName.charAt(0))) {
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "O nome do usuário deve começar com uma letra maiúscula!",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else if (!userPhone.matches(phoneRegex)) {
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "O telefone deve conter o padrão (00)00000-0000",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     
         return new User(userName, userPhone);
