@@ -82,7 +82,12 @@ public class VehicleRegistration extends JFrame {
                 try {
                     validateSearchedVehicle();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Erro ao pesquisar veículo", "Erro", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            vechicleRegistrationPanel,
+                            "Erro ao pesquisar veículo",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                    );
                 }
             }
         });
@@ -142,16 +147,32 @@ public class VehicleRegistration extends JFrame {
     }
     
     public void validateSearchedVehicle() {
-        if (carPlate == null || carPlate.isEmpty() || !carPlate.equals(memoryCar.getCarPlate())) {
+        if (carPlate == null || carPlate.isEmpty()) {
             JOptionPane.showMessageDialog(
-                    null, "Por favor, digite o número de placa do veículo corretamente", "Erro",
+                    vechicleRegistrationPanel,
+                    "Por favor, digite o número de placa do veículo corretamente",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else if(!carPlate.equals(memoryCar.getCarPlate())) {
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "Não encontramos o veículo com a placa " + carPlate,
+                    "Erro",
                     JOptionPane.ERROR_MESSAGE
             );
         } else {
-            jtfCarBrand.setText(memoryCar.getCarBrand());
-            jtfCarModel.setText(memoryCar.getCarModel());
-            jtfUserName.setText(memoryUser.getUserName());
-            jftfUserPhone.setText(memoryUser.getUserPhone());
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "Os dados para a placa informada foram encontrados: \n"
+                            + "Marca: " + memoryCar.getCarBrand()
+                            + "\nModelo: " + memoryCar.getCarModel()
+                            + "\nPlaca do veículo: " + memoryCar.getCarPlate()
+                            + "\nProprietário: " + memoryUser.getUserName()
+                            + "\nTelefone: " + memoryUser.getUserPhone(),
+                    "Veículo encontrado",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
         }
     }
     
