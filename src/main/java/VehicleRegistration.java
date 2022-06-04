@@ -1,3 +1,6 @@
+import Utils.CarException;
+import Utils.UserException;
+
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
@@ -54,12 +57,17 @@ public class VehicleRegistration extends JFrame {
                 
                 try {
                     memoryUser = validadeUserRegistration();
-                    memoryCar = validadteCarRegistration();
+                    memoryCar = validateCarRegistration();
                     JOptionPane.showMessageDialog(vechicleRegistrationPanel,
                             "Novo veículo do proprietario (" + userName + ") cadastrado!"
                     );
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(vechicleRegistrationPanel, "Erro ao cadastrar veículo");
+                    JOptionPane.showMessageDialog(
+                            vechicleRegistrationPanel,
+                            "Erro ao cadastrar veículo, tente novamente!",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                    );
                 } finally {
                     clearFormFields();
                 }
@@ -74,39 +82,97 @@ public class VehicleRegistration extends JFrame {
                 try {
                     validateSearchedVehicle();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Erro ao pesquisar veículo", "Erro", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            vechicleRegistrationPanel,
+                            "Erro ao pesquisar veículo",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                    );
                 }
             }
         });
     }
     
-    public User validadeUserRegistration() {
+    public User validadeUserRegistration() throws UserException {
+        String phoneRegex = "^\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}$";
+        
         if (userName.isEmpty() || userPhone.isEmpty()) {
-            JOptionPane.showMessageDialog(vechicleRegistrationPanel, "Preencha todos os campos");
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "O nome do usuário e o telefone são obrigatórios!",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else if (!Character.isUpperCase(userName.charAt(0))) {
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "O nome do usuário deve começar com uma letra maiúscula!",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else if (!userPhone.matches(phoneRegex)) {
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "O telefone deve conter o padrão (00)00000-0000",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     
         return new User(userName, userPhone);
     }
     
-    public Car validadteCarRegistration() {
+    public Car validateCarRegistration() throws CarException {
+        String plateRegex = "^[A-Z]{3}[0-9]{4}$";
+        
         if (carBrand.isEmpty() || carModel.isEmpty() || carPlate.isEmpty()) {
             JOptionPane.showMessageDialog(vechicleRegistrationPanel, "Preencha todos os campos");
+        } else if(!Character.isUpperCase(carBrand.charAt(0)) || !Character.isUpperCase(carModel.charAt(0))) {
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "A marca ou modelo do carro deve começar com uma letra maiúscula",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else if(!carPlate.matches(plateRegex)) {
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "A sua placa deve conter o padrão Mercosul: AAA0000",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
         
         return new Car(carBrand, carModel, carPlate);
     }
     
     public void validateSearchedVehicle() {
-        if (carPlate == null || carPlate.isEmpty() || !carPlate.equals(memoryCar.getCarPlate())) {
+        if (carPlate == null || carPlate.isEmpty()) {
             JOptionPane.showMessageDialog(
-                    null, "Por favor, digite o número de placa do veículo corretamente", "Erro",
+                    vechicleRegistrationPanel,
+                    "Por favor, digite o número de placa do veículo corretamente",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else if(!carPlate.equals(memoryCar.getCarPlate())) {
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "Não encontramos o veículo com a placa " + carPlate,
+                    "Erro",
                     JOptionPane.ERROR_MESSAGE
             );
         } else {
-            jtfCarBrand.setText(memoryCar.getCarBrand());
-            jtfCarModel.setText(memoryCar.getCarModel());
-            jtfUserName.setText(memoryUser.getUserName());
-            jftfUserPhone.setText(memoryUser.getUserPhone());
+            JOptionPane.showMessageDialog(
+                    vechicleRegistrationPanel,
+                    "Os dados para a placa informada foram encontrados: \n"
+                            + "Marca: " + memoryCar.getCarBrand()
+                            + "\nModelo: " + memoryCar.getCarModel()
+                            + "\nPlaca do veículo: " + memoryCar.getCarPlate()
+                            + "\nProprietário: " + memoryUser.getUserName()
+                            + "\nTelefone: " + memoryUser.getUserPhone(),
+                    "Veículo encontrado",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
         }
     }
     
